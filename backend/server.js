@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const supabase = require("./config/supabase");
 
@@ -33,19 +34,25 @@ async function testSupabase() {
 
 testSupabase();
 
+// API Routes
 app.use("/api/contestants", contestantRoutes);
 app.use("/api/votes", voteRequestRoutes);
 app.use("/api/admin", adminRoutes);
 
-app.get("/test", (req, res) => {
-  res.send("TEST ROUTE WORKING");
-});
-
-app.get("/", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({
     success: true,
-    message: "MasterChef SG Backend Running",
+    message: "MasterChef SG API Running",
   });
+});
+
+// Serve frontend static build files
+const frontendDist = path.join(__dirname, "../frontend/dist");
+app.use(express.static(frontendDist));
+
+// SPA Catch-all: serve index.html for all non-API routes (Express 5 compatible)
+app.use((req, res) => {
+  res.sendFile(path.join(frontendDist, "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;
