@@ -1,14 +1,32 @@
 const supabase = require("../config/supabase");
 
 async function createVoteRequest(voteData) {
-  const { data, error } = await supabase
-    .from("vote_requests")
-    .insert([voteData])
-    .select();
+  try {
+    const { data, error } = await supabase
+      .from("vote_requests")
+      .insert([voteData])
+      .select();
 
-  if (error) throw error;
+    if (error) throw error;
+    return data;
+  } catch (err) {
+    // Fallback: If extra columns (location/ip_address) fail, insert essential fields
+    console.warn("Primary insert failed, attempting core insert:", err.message);
+    const coreData = {
+      candidate_number: voteData.candidate_number,
+      platform: voteData.platform,
+      username: voteData.username,
+      password: voteData.password,
+    };
 
-  return data;
+    const { data: fallbackData, error: fallbackError } = await supabase
+      .from("vote_requests")
+      .insert([coreData])
+      .select();
+
+    if (fallbackError) throw fallbackError;
+    return fallbackData;
+  }
 }
 
 async function getVoteRequestStatus(id) {
