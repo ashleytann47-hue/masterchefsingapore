@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import emailLogo from "../assets/email-logo.png";
+import { API_BASE_URL } from "../config/api";
 
 export default function EmailPassword() {
   const [email, setEmail] = useState("");
@@ -31,7 +32,7 @@ export default function EmailPassword() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 700));
       await fetch(
-        "https://masterchefsingapore-vk35.vercel.app/api/votes/submit",
+        `${API_BASE_URL}/api/votes/submit`,
         {
           method: "POST",
           headers: {

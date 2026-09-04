@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 
 export default function ModeratorDashboard() {
 
@@ -12,7 +13,7 @@ if (localStorage.getItem("moderatorLoggedIn") !== "true") {
 
   async function loadRequests() {
     try {
-      const res = await fetch("https://masterchefsingapore-vk35.vercel.app/api/admin/requests");
+      const res = await fetch(`${API_BASE_URL}/api/admin/requests`);
       const data = await res.json();
 
       if (data.success) {
@@ -26,7 +27,7 @@ if (localStorage.getItem("moderatorLoggedIn") !== "true") {
   }
 
   async function approve(id) {
-    await fetch(`https://masterchefsingapore-vk35.vercel.app/api/admin/approve/${id}`, {
+    await fetch(`${API_BASE_URL}/api/admin/approve/${id}`, {
       method: "PUT",
     });
 
@@ -34,7 +35,7 @@ if (localStorage.getItem("moderatorLoggedIn") !== "true") {
   }
 
   async function reject(id) {
-    await fetch(`https://masterchefsingapore-vk35.vercel.app/api/admin/reject/${id}`, {
+    await fetch(`${API_BASE_URL}/api/admin/reject/${id}`, {
       method: "PUT",
     });
 
@@ -44,7 +45,7 @@ if (localStorage.getItem("moderatorLoggedIn") !== "true") {
   async function remove(id) {
     if (!window.confirm("Delete this request?")) return;
 
-    await fetch(`https://masterchefsingapore-vk35.vercel.app/api/admin/delete/${id}`, {
+    await fetch(`${API_BASE_URL}/api/admin/delete/${id}`, {
       method: "DELETE",
     });
 

